@@ -273,7 +273,35 @@ class DepartureCard extends HTMLElement {
       } else {
         departureState = "delayed";
       }
-      let delayText = delay > 0 ? `+${delay}` : "";
+      let delayText = "";
+
+      if (delay > 0) {
+        let actualDeparture;
+
+        if (unixTime) {
+          const actualTime = new Date(connection[config.departure] * 1000);
+          actualTime.setMinutes(actualTime.getMinutes() + Number(delay));
+
+          actualDeparture = actualTime.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+        } else {
+          const [hours, minutes] = departure.split(':').map(Number);
+
+          let actualMinutes = hours * 60 + minutes + Number(delay);
+          actualMinutes = actualMinutes % (24 * 60);
+
+          const actualHours = Math.floor(actualMinutes / 60);
+          const actualMins = actualMinutes % 60;
+
+          actualDeparture =
+            `${String(actualHours).padStart(2, '0')}:${String(actualMins).padStart(2, '0')}`;
+        }
+
+        delayText = `+${delay} min (${actualDeparture})`;
+      }
+      
       departureState = isCancelled == 1 ? "cancelled" : departureState;
 
       if (relativeTime && !unixTime) {
