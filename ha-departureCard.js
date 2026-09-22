@@ -157,12 +157,12 @@ class DepartureCard extends HTMLElement {
             max-width: 100%;
             padding: 16px;
             overflow-x: auto;
-		  }
-		  .card-content.text-xs { font-size: var(--ha-font-size-xs); }
-		  .card-content.text-s { font-size: var(--ha-font-size-s); }
-		  .card-content.text-m { font-size: var(--ha-font-size-m); }
-		  .card-content.text-l { font-size: var(--ha-font-size-l); }
-		  .card-content.text-xl { font-size: var(--ha-font-size-xl); }
+      }
+      .card-content.text-xs { font-size: var(--ha-font-size-xs); }
+      .card-content.text-s { font-size: var(--ha-font-size-s); }
+      .card-content.text-m { font-size: var(--ha-font-size-m); }
+      .card-content.text-l { font-size: var(--ha-font-size-l); }
+      .card-content.text-xl { font-size: var(--ha-font-size-xl); }
           h1 {
             margin: 8px 0 0 0;
           }
@@ -171,29 +171,29 @@ class DepartureCard extends HTMLElement {
             margin-top: 0;
           }
           .table {
-	    	width: 100%;
+        width: 100%;
             border-collapse: collapse;
           }
           .departure-row td {
             border-bottom: var(--ha-card-border-width,1px) solid var(--ha-card-border-color,var(--divider-color,#e0e0e0));
             line-height: 1.2;
-	    	padding: 4px;
+        padding: 4px;
           }
-		  .departure-row:last-child td {
-		    border-bottom: 0px none;
-		  }
-		  .departure-row td:last-child {
-		    padding-right: 16px;
-		  }
-		  .on-time .departure {
-		    color: var(--success-color);
-		  }
-		  .short-delay .departure {
-		    color: var(--warning-color);
-		  }
-		  .delayed .departure {
-		    color: var(--error-color);
-		  }
+      .departure-row:last-child td {
+        border-bottom: 0px none;
+      }
+      .departure-row td:last-child {
+        padding-right: 16px;
+      }
+      .on-time .departure, .on-time .delay span {
+        color: var(--success-color);
+      }
+      .short-delay .departure, .short-delay .delay span {
+        color: var(--warning-color);
+      }
+      .delayed .departure, .delayed .delay span {
+        color: var(--error-color);
+      }
           .cancelled {
             text-decoration: line-through;
             opacity: 0.6;
@@ -201,7 +201,7 @@ class DepartureCard extends HTMLElement {
           .departure-row td.train {
             text-align: left;
             white-space: nowrap;
-	    	padding-left: 16px;
+        padding-left: 16px;
           }
           .departure-row td.destination {
             text-align: left;
@@ -226,9 +226,6 @@ class DepartureCard extends HTMLElement {
             padding-left: 4px;
             min-width: 20px;
             white-space: nowrap;
-          }
-          .delay span {
-            color: var(--error-color);
           }
         </style>
         <div class="card-content text-${config.fontSize}">
@@ -273,6 +270,7 @@ class DepartureCard extends HTMLElement {
       } else {
         departureState = "delayed";
       }
+      
       let delayText = "";
 
       if (delay > 0) {
@@ -301,7 +299,7 @@ class DepartureCard extends HTMLElement {
 
         delayText = `+${delay} min (${actualDeparture})`;
       }
-      
+
       departureState = isCancelled == 1 ? "cancelled" : departureState;
 
       if (relativeTime && !unixTime) {
@@ -316,8 +314,8 @@ class DepartureCard extends HTMLElement {
           departure = diffMinutes <= 0 ? "Jetzt" : `In ${diffMinutes} Minuten`;
           delayText = "";
         } 
-        
       }
+
       if (relativeTime && unixTime) {
         let d = new Date(connection[config.departure] * 1000);
         d.setMinutes(d.getMinutes() + Number(delay));
@@ -341,7 +339,7 @@ class DepartureCard extends HTMLElement {
             <td class="delay">${delayText ? `<span>${delayText}</span>` : ""}</td>
           </tr>
         `;
-    });
+    }); 
 
     departuresHtml += `</tbody></table></div></ha-card>`;
 
@@ -426,24 +424,24 @@ class DepartureCard extends HTMLElement {
               ]
             },
             {
-	      type: "constant",
-	      name: "Display"
-	    },
-	    {
-	      name: "",
+        type: "constant",
+        name: "Display"
+      },
+      {
+        name: "",
               type: "grid",
-	      multiple: false,
+        multiple: false,
               default: {},
-	      schema: [
+        schema: [
                 { name: "displayed_connections", required: true, selector: { number: { min: 1, max: 20, mode: "box" } } },
-	        { name: "fontSize", required: true, selector: { select: { mode: "dropdown", options: [
-			{ label: "Extra Small", value: "xs" },
-			{ label: "Small", value: "s" },
-			{ label: "Medium", value: "m" },
-			{ label: "Large", value: "l" },
-		        { label: "Extra Large", value: "xl" } ] } } }
-	      ]
-	    },
+          { name: "fontSize", required: true, selector: { select: { mode: "dropdown", options: [
+      { label: "Extra Small", value: "xs" },
+      { label: "Small", value: "s" },
+      { label: "Medium", value: "m" },
+      { label: "Large", value: "l" },
+            { label: "Extra Large", value: "xl" } ] } } }
+        ]
+      },
             {
               type: "constant",
               name: "Time Information"              
